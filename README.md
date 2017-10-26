@@ -1,0 +1,1 @@
+# Simple LinguaLeo api wrapper
