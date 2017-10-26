@@ -12,6 +12,7 @@ requests = "*"
 
 [dev-packages]
 
+ipython = "*"
 
 
 [requires]
