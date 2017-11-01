@@ -2,6 +2,7 @@ import requests
 from typing import Dict, AnyStr, List
 
 from .constants import RequestMethod, BASE_URL
+from .settings import EMAIL, PASSWORD
 
 
 class LinguaLeoApi:
@@ -9,7 +10,9 @@ class LinguaLeoApi:
     password = None
     session = None
 
-    def __init__(self, email: AnyStr, password: AnyStr):
+    def __init__(self,
+                 email: AnyStr=EMAIL,
+                 password: AnyStr=PASSWORD):
         self.email = email
         self.password = password
         self.session = requests.session()
