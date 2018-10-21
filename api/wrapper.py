@@ -10,27 +10,21 @@ logger = logging.getLogger(__name__)
 
 
 class LinguaLeoApi:
-    email = None
-    password = None
-    session = None
-
-    def __init__(self,
-                 email: AnyStr=EMAIL,
-                 password: AnyStr=PASSWORD):
+    def __init__(self, email: AnyStr=EMAIL, password: AnyStr=PASSWORD):
         self.email = email
         self.password = password
         self.session = requests.session()
 
     def auth(self) -> Dict:
         data = {'email': self.email, 'password': self.password}
-        return self.request(
+        return self.__request(
             path=LeoPath.LOGIN,
             method=RequestMethod.POST,
             data=data,
         )
 
     def translate(self, word: AnyStr) -> List:
-        response = self.request(
+        response = self.__request(
             path=LeoPath.TRANSLATE,
             method=RequestMethod.GET,
             params={'word': word},
@@ -38,31 +32,24 @@ class LinguaLeoApi:
         return [item['value'] for item in response['translate']]
 
     def send_word(self, word: AnyStr, translate: AnyStr) -> Dict:
-        return self.request(
+        return self.__request(
             path=LeoPath.ADDWORD,
             method=RequestMethod.POST,
             data={'word': word, 'tword': translate},
         )
 
-    def request(self,
-                path: LeoPath,
-                method: RequestMethod,
-                **kwargs) -> Dict:
-        url = BASE_URL + path.value
+    def __request(self, path: LeoPath, method: RequestMethod, **kwargs) -> Dict:
+        logger.debug(
+            'send request with params: path: %s, method: %s, data: %s',
+            path,
+            method,
+            kwargs.get('params') or kwargs.get('data'),
+        )
         try:
-            logger.debug(
-                'send request with params: path: %s, method: %s, data: %s',
-                path,
-                method,
-                kwargs.get('params') or kwargs.get('data'),
-            )
-
-            response = self.session.request(
+            return self.session.request(
                 method=method.value,
-                url=url,
+                url=BASE_URL + path.value,
                 **kwargs
-            )
+            ).json()
         except Exception:
             logger.error('error request', exc_info=True)
-        else:
-            return response.json()
