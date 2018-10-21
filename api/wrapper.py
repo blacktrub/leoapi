@@ -21,8 +21,6 @@ class LinguaLeoApi:
         self.password = password
         self.session = requests.session()
 
-        self.auth()
-
     def auth(self) -> Dict:
         data = {'email': self.email, 'password': self.password}
         return self.request(
