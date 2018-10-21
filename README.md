@@ -9,7 +9,7 @@
 
     `$ pipenv install`
 
-You can to learn more about **pipenv** on [official github page](https://github.com/kennethreitz/pipenv)
+You can learn more about **pipenv** on [official github page](https://github.com/kennethreitz/pipenv)
 ### Simple usage:
 ```python
 In [1]: from api import LinguaLeoApi
